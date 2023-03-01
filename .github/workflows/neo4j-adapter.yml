@@ -1,0 +1,21 @@
+name: Issue Credential
+
+on: workflow_dispatch
+
+jobs:
+  all-presentations:
+    runs-on: ubuntu-latest
+    name: Issue Credential
+    outputs:
+      json: ${{ steps.issue-credential.outputs.json }}
+    steps:
+      # Query for all the verifiable presentations on the users organization, both sent and received.
+      - name: Get Credentials
+        uses: transmute-industries/verifiable-data-platform-github-action@v0.0.2
+        id: getCredentials
+        with:
+          operation-id: getCredentials
+          api-base-url: ${{ secrets.API_BASE_URL }}
+
+      # Convert the VP from JSON-LD to cypher.
+      # Commit the cypher to the Neo4j instance
