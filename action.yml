@@ -1,0 +1,23 @@
+name: 'Transmute Neo4j Adapter Action'
+description: |
+  This action supports neo4j and transmute platform adapter integrations.
+inputs:
+  neo4j-uri:
+    description: |
+      Neo4j Connection URL.
+    require: true
+  neo4j-user:
+    description: |
+      Neo4j User.
+    require: true
+  neo4j-password:
+    description: |
+      Neo4j Password.
+    require: true
+  document:
+    description: |
+      A JSON Document (string).
+    require: true
+runs:
+  using: 'node16'
+  main: 'index.js'
