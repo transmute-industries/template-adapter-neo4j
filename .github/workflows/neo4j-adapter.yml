@@ -14,10 +14,10 @@ jobs:
         id: tokenCreate
         with:
           operation-id: tokenCreate
-          api-base-url: ${{ secrets.API_BASE_URL }}
+          api-base-url: https://test.transmute.industries
           did: ${{ secrets.ORGANIZATION_DID_WEB }}
-          token-endpoint: ${{ secrets.TOKEN_ENDPOINT }}
-          token-audience: ${{ secrets.TOKEN_AUDIENCE }}
+          token-endpoint: https://test.transmute.industries/oauth/token
+          token-audience: https://test.transmute.industries
           client-id: ${{ secrets.CLIENT_ID }}
           client-secret: ${{ secrets.CLIENT_SECRET }}
       - name: Gets Received Presentations
