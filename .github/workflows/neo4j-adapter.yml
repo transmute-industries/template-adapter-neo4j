@@ -34,7 +34,6 @@ jobs:
         run: echo "::set-output name=presentations::$(cat received-presentations.json)"
       - name: Merge Received Query from Document
         uses: transmute-industries/jsonld-to-cypher@v0.1.3
-        id: merge
         with:
           neo4j-uri: ${{ secrets.NEO4J_URI }}
           neo4j-user: ${{ secrets.NEO4J_USERNAME }}
@@ -55,7 +54,6 @@ jobs:
         run: echo "::set-output name=presentations::$(cat sent-presentations.json)"
       - name: Merge Sent Query from Document
         uses: transmute-industries/jsonld-to-cypher@v0.1.3
-        id: merge
         with:
           neo4j-uri: ${{ secrets.NEO4J_URI }}
           neo4j-user: ${{ secrets.NEO4J_USERNAME }}
