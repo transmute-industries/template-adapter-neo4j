@@ -10,18 +10,18 @@ jobs:
       json: ${{ steps.issue-credential.outputs.json }}
     steps:
       - name: Get Access Token
-        uses: transmute-industries/verifiable-data-platform-github-action@v0.0.5
+        uses: transmute-industries/verifiable-data-platform-github-action@v0.0.6
         id: tokenCreate
         with:
           operation-id: tokenCreate
           api-base-url: https://test.transmute.industries
-          did: ${{ secrets.ORGANIZATION_DID_WEB }}
+          did: did:web:test.transmute.industries:organizations:org_OYSeCasVPVgBM59v
           token-endpoint: https://test.transmute.industries/oauth/token
           token-audience: https://test.transmute.industries
           client-id: ${{ secrets.CLIENT_ID }}
           client-secret: ${{ secrets.CLIENT_SECRET }}
       - name: Gets Received Presentations
-        uses: transmute-industries/verifiable-data-platform-github-action@v0.0.5
+        uses: transmute-industries/verifiable-data-platform-github-action@v0.0.6
         id: getPresentationsSharedWithMe
         with:
           operation-id: getPresentationsSharedWithMe
@@ -41,7 +41,7 @@ jobs:
           operation: merge
           document: ${{ steps.getreceived.outputs.presentations }}
       - name: Gets Sent Presentations
-        uses: transmute-industries/verifiable-data-platform-github-action@v0.0.5
+        uses: transmute-industries/verifiable-data-platform-github-action@v0.0.6
         id: getPresentationsSharedWithOthers
         with:
           operation-id: getPresentationsSharedWithOthers
