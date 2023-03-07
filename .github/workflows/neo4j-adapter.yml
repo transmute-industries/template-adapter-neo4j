@@ -29,34 +29,41 @@ jobs:
         run: echo $verifiable_data_platform_api_response >> received-presentations.json
       - name: set received to presentation
         run: cat received-presentations.json | jq .items[0] > received-presentations.json
+      - name: set received to env
+        run: echo "received_presentations=$(cat received-presentations.json)" >> $GITHUB_ENV
       - name: Env received
         id: getreceived
         run: echo "::set-output name=presentations::$(cat received-presentations.json)"
+      - name: debug
+        run: echo ${{ steps.getreceived.outputs.presentations }}
+      - name: debug2
+        run: echo $received_presentations
       - name: Merge Received Query from Document
         uses: transmute-industries/jsonld-to-cypher@v0.1.3
         with:
           neo4j-uri: ${{ secrets.NEO4J_URI }}
           neo4j-user: ${{ secrets.NEO4J_USERNAME }}
           neo4j-password: ${{ secrets.NEO4J_PASSWORD }}
-          operation: merge
           document: ${{ steps.getreceived.outputs.presentations }}
-      - name: Gets Sent Presentations
-        uses: transmute-industries/verifiable-data-platform-github-action@v0.0.6
-        id: getPresentationsSharedWithOthers
-        with:
-          operation-id: getPresentationsSharedWithOthers
-      - name: Add sent to file
-        run: echo $verifiable_data_platform_api_response >> sent-presentations.json
-      - name: set sent to presentation
-        run: cat sent-presentations.json | jq .items[0] > sent-presentations.json
-      - name: Env sent
-        id: getsent
-        run: echo "::set-output name=presentations::$(cat sent-presentations.json)"
-      - name: Merge Sent Query from Document
-        uses: transmute-industries/jsonld-to-cypher@v0.1.3
-        with:
-          neo4j-uri: ${{ secrets.NEO4J_URI }}
-          neo4j-user: ${{ secrets.NEO4J_USERNAME }}
-          neo4j-password: ${{ secrets.NEO4J_PASSWORD }}
           operation: merge
-          document: ${{ steps.getsent.outputs.presentations }}
+      # TODO: get first one working
+      # - name: Gets Sent Presentations
+      #   uses: transmute-industries/verifiable-data-platform-github-action@v0.0.6
+      #   id: getPresentationsSharedWithOthers
+      #   with:
+      #     operation-id: getPresentationsSharedWithOthers
+      # - name: Add sent to file
+      #   run: echo $verifiable_data_platform_api_response >> sent-presentations.json
+      # - name: set sent to presentation
+      #   run: cat sent-presentations.json | jq .items[0] > sent-presentations.json
+      # - name: Env sent
+      #   id: getsent
+      #   run: echo "::set-output name=presentations::$(cat sent-presentations.json)"
+      # - name: Merge Sent Query from Document
+      #   uses: transmute-industries/jsonld-to-cypher@v0.1.3
+      #   with:
+      #     neo4j-uri: ${{ secrets.NEO4J_URI }}
+      #     neo4j-user: ${{ secrets.NEO4J_USERNAME }}
+      #     neo4j-password: ${{ secrets.NEO4J_PASSWORD }}
+      #     operation: merge
+      #     document: ${{ steps.getsent.outputs.presentations }}
