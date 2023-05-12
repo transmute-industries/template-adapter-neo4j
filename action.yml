@@ -1,4 +1,4 @@
-name: 'Transmute Neo4j Adapter Action'
+name: Transmute Neo4j Adapter Action
 description: |
   This action supports neo4j and transmute platform adapter integrations.
 inputs:

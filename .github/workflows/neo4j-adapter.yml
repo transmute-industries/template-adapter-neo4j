@@ -1,34 +1,34 @@
-name: VDP Presentation to Neo4j
+name: Synchronize Presentations to Neo4j
 
 on: workflow_dispatch
 
 jobs:
   all-presentations:
     runs-on: ubuntu-latest
-    name: Export VDP presentations to Neo4j instance
+    name: Synchronize Presentations
     outputs:
       json: ${{ steps.issue-credential.outputs.json }}
     steps:
       - name: Get Access Token
-        uses: transmute-industries/verifiable-data-platform-github-action@v0.0.6
+        uses: transmute-industries/verifiable-data-platform-github-action@v0.1.1
         id: tokenCreate
         with:
           operation-id: tokenCreate
-          api-base-url: https://test.transmute.industries
-          did: did:web:test.transmute.industries:organizations:org_OYSeCasVPVgBM59v
-          token-endpoint: https://test.transmute.industries/oauth/token
-          token-audience: https://test.transmute.industries
+          api-base-url: ${{ secrets.API_BASE_URL }}
+          did: ${{ secrets.ORGANIZATION_DID_WEB }}
+          token-endpoint: ${{ secrets.TOKEN_ENDPOINT }}
+          token-audience: ${{ secrets.TOKEN_AUDIENCE }}
           client-id: ${{ secrets.CLIENT_ID }}
           client-secret: ${{ secrets.CLIENT_SECRET }}
       - name: Gets Received Presentations
-        uses: transmute-industries/verifiable-data-platform-github-action@v0.0.6
+        uses: transmute-industries/verifiable-data-platform-github-action@v0.1.1
         id: getPresentationsSharedWithMe
         with:
           operation-id: getPresentationsSharedWithMe
       - name: set received to env
         run: echo "received_presentations=$(echo $verifiable_data_platform_api_response | jq -c '.items' | jq -c 'map(.verifiablePresentation)' | jq -c .[0:9])" >> $GITHUB_ENV
       - name: Merge Received Query from Document
-        uses: transmute-industries/jsonld-to-cypher@v0.1.5
+        uses: transmute-industries/jsonld-to-cypher@v0.2.4
         with:
           neo4j-uri: ${{ secrets.NEO4J_URI }}
           neo4j-user: ${{ secrets.NEO4J_USERNAME }}
@@ -37,14 +37,14 @@ jobs:
           operation: merge
 
       - name: Gets Sent Presentations
-        uses: transmute-industries/verifiable-data-platform-github-action@v0.0.6
+        uses: transmute-industries/verifiable-data-platform-github-action@v0.1.1
         id: getPresentationsSharedWithOthers
         with:
           operation-id: getPresentationsSharedWithOthers
       - name: set received to env
         run: echo "sent_presentations=$(echo $verifiable_data_platform_api_response | jq -c '.items' | jq -c 'map(.verifiablePresentation)' | jq -c .[0:9])" >> $GITHUB_ENV
       - name: Merge Sent Query from Document
-        uses: transmute-industries/jsonld-to-cypher@v0.1.5
+        uses: transmute-industries/jsonld-to-cypher@v0.2.4
         with:
           neo4j-uri: ${{ secrets.NEO4J_URI }}
           neo4j-user: ${{ secrets.NEO4J_USERNAME }}
