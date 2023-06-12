@@ -28,7 +28,7 @@ jobs:
       - name: set received to env
         run: echo "received_presentations=$(echo $verifiable_data_platform_api_response | jq -c '.items' | jq -c 'map(.verifiablePresentation)' | jq -c .[0:9])" >> $GITHUB_ENV
       - name: Merge Received Query from Document
-        uses: transmute-industries/transmute@v0.8.2
+        uses: transmute-industries/transmute@v0.8.6
         with:
           neo4j-uri: ${{ secrets.NEO4J_URI }}
           neo4j-user: ${{ secrets.NEO4J_USERNAME }}
@@ -43,7 +43,7 @@ jobs:
       - name: set received to env
         run: echo "sent_presentations=$(echo $verifiable_data_platform_api_response | jq -c '.items' | jq -c 'map(.verifiablePresentation)' | jq -c .[0:9])" >> $GITHUB_ENV
       - name: Merge Sent Query from Document
-        uses: transmute-industries/transmute@v0.8.2
+        uses: transmute-industries/transmute@v0.8.6
         with:
           neo4j-uri: ${{ secrets.NEO4J_URI }}
           neo4j-user: ${{ secrets.NEO4J_USERNAME }}
